@@ -8,6 +8,8 @@
 
 #import "MasterViewController.h"
 #import "DetailViewController.h"
+#import "Image.h"
+
 
 @interface MasterViewController ()
 
@@ -28,7 +30,21 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
+    
+    //instanciation des images
+    Image *image1 = [[Image alloc] init];
+    Image *image2 = [[Image alloc] init];
+    Image *image3 = [[Image alloc] init];
+    Image *image4 = [[Image alloc] init];
+    Image *image5 = [[Image alloc] init];
+    
+    [self.imagesTab addObject:image1];
+    [self.imagesTab addObject:image2];
+    [self.imagesTab addObject:image3];
+    [self.imagesTab addObject:image4];
+    [self.imagesTab addObject:image5];
+    
+    
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
@@ -85,6 +101,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [self.objects removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -92,5 +109,4 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
 }
-
 @end
