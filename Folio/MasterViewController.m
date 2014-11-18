@@ -31,6 +31,9 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
+    //allocation mémoire de tableimage
+    self.imagesTab = [[NSMutableArray alloc] init];
+    
     //instanciation des images
     Image *image1 = [[Image alloc] init];
     Image *image2 = [[Image alloc] init];
@@ -38,11 +41,35 @@
     Image *image4 = [[Image alloc] init];
     Image *image5 = [[Image alloc] init];
     
+    //On alloue de la mémoire pour un tableau de mutableobject dans le self.object
+    if(!self.objects)
+    {
+        self.objects = [[NSMutableArray alloc] init];
+    }
+    
+    //On set les noms de simages
+    image1.nomImage = @"image 1";
+    image2.nomImage = @"image 2";
+    image3.nomImage = @"image 3";
+    image4.nomImage = @"image 4";
+    image5.nomImage = @"image 5";
+    
+    //On set les noms des fichiers
+    image1.nomFichier = @"photo_1.jpg";
+    image2.nomFichier = @"photo_2.jpg";
+    image3.nomFichier = @"photo_3.jpg";
+    image4.nomFichier = @"photo_4.jpg";
+    image5.nomFichier = @"photo_5.jpg";
+    
+    //On ajout les images dans le tableau d'images
     [self.imagesTab addObject:image1];
     [self.imagesTab addObject:image2];
     [self.imagesTab addObject:image3];
     [self.imagesTab addObject:image4];
     [self.imagesTab addObject:image5];
+    
+    //On ajoute le tableau d'image dnas le self.object
+    [self.objects addObject:self.imagesTab];
     
     
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
@@ -69,7 +96,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = self.objects[indexPath.row];
+        Image *object = self.imagesTab[indexPath.row];
         DetailViewController *controller = (DetailViewController *)[[segue destinationViewController] topViewController];
         [controller setDetailItem:object];
         controller.navigationItem.leftBarButtonItem = self.splitViewController.displayModeButtonItem;
@@ -80,7 +107,7 @@
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.imagesTab.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -90,8 +117,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = self.objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    Image *image = self.imagesTab[indexPath.row];
+    cell.textLabel.text = [image nomImage];
+    
     return cell;
 }
 
